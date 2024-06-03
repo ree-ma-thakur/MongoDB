@@ -65,10 +65,10 @@
   - deleteMany(filter, options)
 - ![CRUD Eg](image-8.png)
 - deletOne: db.flightData.deleteOne({departureAirport:"IXC"}): find the first document in collection with this, then it will delete that one
-- updateOne: db.flightData.updateOne({distance:12000},{$set:{marker: "delete"}}): $set tell mongoDb to set this value for thr specified filter
+- updateOne: db.flightData.updateOne({distance:12000},{$set:{marker: "delete"}}): '$set' tell mongoDb to set this value for thr specified filter
 - updateMany: db.flightData.updateMany({}, {$set:{marker:'toDelete'}}): updated all the documents; If marker already exists in document it will be replace & if not present then added to document
 - deleteMany: db.flightData.deleteMany({marker:'toDelete'}) : delete documents with this filter
 - insertMany: db.flightData.insertMany([ { "departureAirport": "MUC", "arrivalAirport": "SFO", "aircraft": "Airbus A380", "distance": 12000, "intercontinental": true }, { "departureAirport": "LHR", "arrivalAirport": "TXL", "aircraft": "Airbus A320", "distance": 950, "intercontinental": false }]): passed array of objects.
 - find(): db.flightData.find({intercontinental:true}).pretty()
-- find() with greater than filter: db.flightData.find({distance:{$gt:10000}}): $gt is greater than; $lt is less than, query gives all the document with filter
+- find() with greater than filter: db.flightData.find({distance:{$gt:10000}}): '$gt' is greater than; '$lt' is less than, query gives all the document with filter
 - findOne(filter): give 1st document that matches the filter
