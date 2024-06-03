@@ -49,3 +49,26 @@
 # CRUD
 
 - We have MongoDB driver for each language, Eg: for nodejs, java etc
+- ![CRUD](image-9.png)
+- Create
+  - insertOne(data, Options): allows to insert some data to collection
+  - insertMany(data, Options)
+- Read
+  - find(filter, options): find the documents inside collection, find all the matching documents
+  - findOne(filter, options): find 1st matching document
+- Update
+  - updateOne(filter, data, options): to change one piece of data
+  - updateMany(filter, data, options)
+  - replaceOne(filter, data, options): to replace the document entirely with new one
+- Delete
+  - deleteOne(filter, options)
+  - deleteMany(filter, options)
+- ![CRUD Eg](image-8.png)
+- deletOne: db.flightData.deleteOne({departureAirport:"IXC"}): find the first document in collection with this, then it will delete that one
+- updateOne: db.flightData.updateOne({distance:12000},{$set:{marker: "delete"}}): $set tell mongoDb to set this value for thr specified filter
+- updateMany: db.flightData.updateMany({}, {$set:{marker:'toDelete'}}): updated all the documents; If marker already exists in document it will be replace & if not present then added to document
+- deleteMany: db.flightData.deleteMany({marker:'toDelete'}) : delete documents with this filter
+- insertMany: db.flightData.insertMany([ { "departureAirport": "MUC", "arrivalAirport": "SFO", "aircraft": "Airbus A380", "distance": 12000, "intercontinental": true }, { "departureAirport": "LHR", "arrivalAirport": "TXL", "aircraft": "Airbus A320", "distance": 950, "intercontinental": false }]): passed array of objects.
+- find(): db.flightData.find({intercontinental:true}).pretty()
+- find() with greater than filter: db.flightData.find({distance:{$gt:10000}}): $gt is greater than; $lt is less than, query gives all the document with filter
+- findOne(filter): give 1st document that matches the filter
