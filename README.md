@@ -72,3 +72,33 @@
 - find(): db.flightData.find({intercontinental:true}).pretty()
 - find() with greater than filter: db.flightData.find({distance:{$gt:10000}}): '$gt' is greater than; '$lt' is less than, query gives all the document with filter
 - findOne(filter): give 1st document that matches the filter
+- if we paas {} as filter it means we want all the data in that case
+- updateOne: db.flightData.updateOne({\_id:ObjectId('665d4d4bcf2442da28cdcdf8')}, {$set: {"delayed":true}}) : Update one element based on filter
+- updateMany: db.flightData.updateMany({\_id:ObjectId('665d4d4bcf2442da28cdcdf8')}, {$set: {"delayed":false}}) : update for all
+  updateMany:
+- update is deprecated
+- replaceOne: db.flightData.replaceOne({ \_id: ObjectId('665d4d4bcf2442da28cdcdf8') }, { departureAirport: 'MUC', arrivalAirport: 'SFO', aircraft: 'Airbus A380', distance: 20000, intercontinental: true, delayed: false }): replaces the entire document mathching the query
+- If we insert many documents in passengers using insertMany
+- find(): it gives back cursor object; we can use 'it' command in shell to see all the data as find does not show all data
+- find does not return array of all docs in collection it gives only 20items as collection can be very big if it has 20M data then it will take very long time to get data & will send lot of data therefore it gives cursor object which is an object which have lot of meta data behind it that allows us to cycle through results
+- toArray: db.passengers.find().toArrray() : it exhaust the cursor & fetch all docs from collection or we can use forEach as db
+- passengers.find().forEach((passengerData)=>{printjson(passengerData)})
+- forEach will fetch the next doc on every loop cycle so it is very efficient as it does not fetch all data in advance & load in memory instead it fetches data on demand not overusing our bandwidth & not loading too much in memory therefore pretty does not work on findOne as pretty method exists only on cursor
+- Projection: If there is more data in database document but in application we only need few data of document, it is better to filter the data on mongodb server only by using Projection otherwise in application it will take more memory & bandwidth
+- ![Projection](image-11.png)
+- db.passengers.find({}, {name:1}).pretty(): projection of name is added it will return name & \_id , \_id is special field in data by default its always included, if we dont want \_id we have to explicilty mention it
+- db.passengers.find({}, {name:1, \_id:0}).pretty() : will not return \_id in documents result
+- Structured data : embedded docs, arrays
+- Embedded documents or nested documents are those types of documents which contain a document inside another document. We can have up to 100 levels of nexting & max 16mb/document
+- Arrays of embedded documents but arrays can hold ANY data, simply means list of data
+- db.flightData.updateMany({}, {$set:{status:{description:"on-time", lastUpdated: "1 hour ago"}}}) : added nested data; now flightData will have embedded document
+- db.flightData.updateMany({}, {$set:{status:{description:"on-time", lastUpdated: "1 hour ago", details:{responsible:"Reema"}}}}): more embedded doc now
+- db.passengers.updateOne({name:'Reema'}, {$set:{hobbies:["sleeping", "eating", "cooking"]}}) : adding arrays
+- Accessing Structured data
+- db.passengers.findOne({name:'Reema'}).hobbies: to get array
+- db.passengers.findOne({hobbies:'cooking'}): to get the document with specific array elt
+- db.flightData.find({"status.details.responsible":"Reema"}): accessing embedded document
+- ![Summary](image-10.png)
+- https://docs.mongodb.com/ecosystem/drivers/
+- https://docs.mongodb.com/manual/tutorial/getting-started/
+  MongoDb enforeces no schemas! But that does not means that we can't use some kind of schema
