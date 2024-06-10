@@ -130,3 +130,27 @@
 - NumberDecimal creates a high-precision double value => NumberDecimal("12.99") => This can be helpful for cases where we need (many) exact decimal places for calculations.
 - https://mongodb.github.io/node-mongodb-native/3.1/api/Long.html
 - db.collection('wealth').insert( {value: Long.fromString("121949898291")});
+
+# Relations
+
+- ![Options](image-13.png)
+- ONE TO ONE RELATION (Embedded) : Patients <-> Disease Summary: 1 patient has 1 disease summary, a disease summary belongs to one patient
+  - use hospital
+  - db.patient.insertOne({name:'Reema', age:25, diseaseSummary:'summary-reema-1'})
+  - db.diseaseSummaries.insertOne({\_id:'summary-reema-1', diseases: ['cold', 'pain']})
+  - db.patient.findOne().diseaseSummary
+  - var dsid=db.patient.findOne().diseaseSummary
+  - db.diseaseSummaries.findOne({\_id:dsid}) : We can get the patient data like this, but its not optimal in 2 dbs, we can use embedded doc for this
+  - db.patients.insertOne({name:'Reema', age:25, diseaseSummary:{ diseases: ['cold', 'pain']}}) : Embedded doc
+- ONE TO ONE (References) : Person <-> Car : One person has one car, a car belongs to one person
+  - If our application needs the average or some calculations on cars data then we don't need embedded doc of car & person, there we can have reference
+  - use carData
+  - db.persons.insertOne({name:'Reema', age:25, salary:100}) : generated \_id that is used in next query
+  - db.cars.insertOne({model:'Ferarri', price:999999, owner: ObjectId('6661b386e319412802cdcdfd')})
+- ONE TO MANY (Embedded) : Thread <-> Answers : One thread has many ans, one ans belong to one ques thread
+  - use support
+  - db.quesThreads.insertOne({creator:'Reema', ques:'How does that work', ans: [{ _id: 'q1a1', text: 'It work like that' },{ _id: 'q1a2', text: 'Thanks' }]})
+- ONE TO MANY (References) : City <-> Citizens : One city has many citizens, one citizen belong to one city
+  - If our app wants to fetch all the cities with their metadata but not all the data of citizens (if we use embedded for this then 16mb limit might be exhausted easily)
+  - db.cities.insertOne({name:'Nalagarh', coordinates:{lat:25, lng:56}})
+  - db.citizens.insertMany([{name:'Reema', cityId: ObjectId('6661c2e8e319412802cdce01')}, {name:'Reemaa', cityId: ObjectId('6661c2e8e319412802cdce01')}])
