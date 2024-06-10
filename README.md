@@ -101,4 +101,32 @@
 - ![Summary](image-10.png)
 - https://docs.mongodb.com/ecosystem/drivers/
 - https://docs.mongodb.com/manual/tutorial/getting-started/
-  MongoDb enforeces no schemas! But that does not means that we can't use some kind of schema
+
+## Schemas & Relations
+
+# Reset DB
+
+- use databaseName
+- db.dropDatabase() : drop db
+- db.myCollection.drop() : drop collection
+- MongoDb enforeces no schemas! But that does not means that we can't use some kind of schema
+
+# Data Types
+
+- ![DataTypes](image-12.png)
+- db companyData
+- db.companies.insertOne({name:"Reema Inc", isStartup:true, employees:101, funding:1234568912345648789, details:{ceo:"Reeva"}, tags:[{title:'super'}, {title:'perfect'}], foundingDate:new Date(), insertedAt: new Timestamp()})
+- db.stats(): give the detail of db
+- db.numbers.insertOne({a: NumberInt(1)}): it takes less memeory in data size & more efficient
+- typeof db.numbers.findOne().a : to check the data type
+- MongoDb limits: https://docs.mongodb.com/manual/reference/limits
+- https://docs.mongodb.com/manual/reference/bson-types/
+- Normal integers (int32) can hold a maximum value of +-2,147,483,647
+- Long integers (int64) can hold a maximum value of +-9,223,372,036,854,775,807
+- Text can be as long as we want - the limit is the 16mb restriction for the overall document
+- NumberInt creates a int32 value => NumberInt(55)
+- NumberLong creates a int64 value => NumberLong(7489729384792)
+- If we just use a number (e.g. insertOne({a: 1}), this will get added as a normal double into the database. The reason for this is that the shell is based on JS which only knows float/ double values and doesn't differ between integers and floats.
+- NumberDecimal creates a high-precision double value => NumberDecimal("12.99") => This can be helpful for cases where we need (many) exact decimal places for calculations.
+- https://mongodb.github.io/node-mongodb-native/3.1/api/Long.html
+- db.collection('wealth').insert( {value: Long.fromString("121949898291")});
