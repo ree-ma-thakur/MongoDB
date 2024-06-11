@@ -164,3 +164,12 @@
   - For books & authors we need updated data of author in collection even if books were already ordered
   - db.authors.insertMany([{name:'reema', age:25,address:{street:'Chd'}}, {name:'ree', age:53, address:{street:'Chandigarh'}}])
   - db.books.insertOne({name:'My fav Book', authors:[ ObjectId('6667de60575f509448cdcdf7'), ObjectId('6667de60575f509448cdcdf8')]})
+- ![alt text](image-14.png)
+
+# lookup
+
+- For merging reference relations
+- ![alt text](image-15.png)
+- A helpful tool that allows us to fetch 2 related docs merged together in one doc in one step instead of having to do 2 steps & this mitigates some of disadv of splitting our docs across collections
+- db.books.aggregate([{$lookup:{from:'authors', localField:'authors', foreignField:'_id', as:'creators'}}])
+- from collection name, local field is , in the connection we're running this on, where can the references to other collection to be found in, foreign field is which field are we relating to in our target collection, as is alias in which it is merged
