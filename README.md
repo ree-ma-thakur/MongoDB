@@ -154,3 +154,13 @@
   - If our app wants to fetch all the cities with their metadata but not all the data of citizens (if we use embedded for this then 16mb limit might be exhausted easily)
   - db.cities.insertOne({name:'Nalagarh', coordinates:{lat:25, lng:56}})
   - db.citizens.insertMany([{name:'Reema', cityId: ObjectId('6661c2e8e319412802cdce01')}, {name:'Reemaa', cityId: ObjectId('6661c2e8e319412802cdce01')}])
+- MANY TO MANY (Embedded) : Customers <-> Products(Orders) : One customers has many products (via orders), a product belong to many customers
+  - Often we model many to many relationships with reference
+  - db.products.insertOne({title:'book', price:99})
+  - db.customers.insertOne({name:'Reema', age:25})
+  - db.customers.updateOne({}, {$set:{orders:[{title:'book', price:99}]}})
+  - Disadv is data duplication, if ever the product data is changed then we have to update in product collection in orders collection also but if the order is placed then we will not be able to change the data for existing orders
+- MANY TO MANY (References) : Books <-> Authors : One book has many authors, an author belongs to many books
+  - For books & authors we need updated data of author in collection even if books were already ordered
+  - db.authors.insertMany([{name:'reema', age:25,address:{street:'Chd'}}, {name:'ree', age:53, address:{street:'Chandigarh'}}])
+  - db.books.insertOne({name:'My fav Book', authors:[ ObjectId('6667de60575f509448cdcdf7'), ObjectId('6667de60575f509448cdcdf8')]})
